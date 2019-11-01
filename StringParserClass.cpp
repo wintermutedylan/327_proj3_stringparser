@@ -49,11 +49,70 @@ int StringParserClass::getDataBetweenTags(char *pDataToSearchThru, std::vector<s
 		return ERROR_DATA_NULL;
 	}
 	myVector.clear();
-	std::string tagsToFind(pDataToSearchThru);
+	/*
+	char *dataStart = pDataToSearchThru;
+	char *dataEnd = pDataToSearchThru;
+	for (unsigned int i = 0; i <strlen(pDataToSearchThru); ++i){
+		dataEnd++;
+	}
+	*/
+
+	bool foundStartTag = false;
+	bool foundEndTag = false;
+	std::string results;
+	int startTagLength = strlen(pStartTag);
+	int endTagLength = strlen(pEndTag);
+	while(*pDataToSearchThru != '\0'){
+		pDataToSearchThru++;
+		if(*pDataToSearchThru == '<'){
+
+			for(int i = 0; i < startTagLength; ++i){
+				if (pDataToSearchThru[i] == pStartTag[i]){
+					foundStartTag = true;
+				}
+
+
+			}
+
+		}
+
+		if (*pDataToSearchThru == '>'){
+			pDataToSearchThru++;
+			if (foundStartTag == true){
+			while (*pDataToSearchThru != '<'){
+
+
+				results += *pDataToSearchThru;
+				pDataToSearchThru++;
+
+			}
+			if(*pDataToSearchThru == '<'){
+				for(int i = 0; i < endTagLength; ++i){
+					if (pDataToSearchThru[i] == pEndTag[i]){
+						foundEndTag = true;
+					}
+
+				}
+
+			}
+			if (foundStartTag == true && foundEndTag == true){
+				myVector.push_back(results);
+			}
+
+			foundStartTag = false;
+			foundEndTag = false;
+			results = "";
+
+
+			}
+
+		}
 
 
 
-	//findTag(pStartTag, pDataToSearchThru)
+	}
+
+
 	return SUCCESS;
 
 
@@ -71,8 +130,34 @@ int StringParserClass::findTag(char *pTagToLookFor, char *&pStart, char *&pEnd){
 	if (pStart == NULL || pEnd == NULL){
 		return ERROR_TAGS_NULL;
 	}
-	std::string tagsToFind(pTagToLookFor);
+	/*
+	while (!areTagsSet){
+		if (*pStart == '<'){
+			if (*pEnd == '>'){
+				if (pStart++ == '/'){
+					if (pStart++ == 't'){
+						pStart++;
+						if (pStart == 'o'){
+								pStart = *pStart;
+						}
+					}
+				}
+				else if (pStart++ == 't'){
+					pStart++;
+					if (pStart == 'o'){
+						pStart = *pStart;
+					}
+				}
+				//test for to in the quotes between pStart and pEnd
+			}
+			pEnd--;
+			continue;
+		}
+		pStart++;
 
+
+	}
+*/
 
 	return SUCCESS;
 
@@ -80,4 +165,3 @@ int StringParserClass::findTag(char *pTagToLookFor, char *&pStart, char *&pEnd){
 
 
 //TODO Fill in
-
